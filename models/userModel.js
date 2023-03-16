@@ -11,6 +11,7 @@ const User = db.define(
     jabatan: { type: Sequelize.STRING },
     password: { type: Sequelize.STRING, allowNull: false },
     role: { type: Sequelize.STRING, defaultValue: "user" },
+    token: { type: Sequelize.STRING, defaultValue: null },
   },
   {
     freezeTableName: true,

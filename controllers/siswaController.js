@@ -1,6 +1,6 @@
 "use strict";
 
-const { Siswa, Nilai } = require("../models");
+const { Siswa, Nilai, User } = require("../models");
 const validation = require("../libraries/JoiLib");
 const { Op, Sequelize } = require("sequelize");
 
@@ -148,7 +148,11 @@ module.exports = {
   getOne: async (req, res) => {
     try {
       const id = req.params.id;
-      const siswa = await Siswa.findOne({ where: { id } });
+      const siswa = await Siswa.findOne({
+        where: { id },
+        include: [{ model: Nilai }],
+        attributes: { exclude: ["createdAt", "updatedAt", "userId"] },
+      });
 
       res.status(200).json({
         status: "success",
@@ -164,19 +168,27 @@ module.exports = {
 
   update: async (req, res) => {
     try {
+      const payload = await validation.updateSiswa.validateAsync(req.body);
       const id = req.params.id;
       const siswa = await Siswa.findOne({ where: { id } });
       if (!siswa) throw new Error("Data siswa tidak ditemukan");
 
-      await Siswa.update({
+      if (payload.nomorInduk) {
+        const dataExist = await Siswa.findOne({
+          where: { nomorInduk: payload.nomorInduk },
+        });
+        if (dataExist)
+          throw new Error(`Nomor induk ${payload.nomorInduk} sudah terdaftar`);
+      }
+      await Siswa.update(payload, {
         where: { id },
-        payload,
       });
 
       res.status(200).json({
         status: "success",
       });
     } catch (error) {
+      console.log("🚀 ~ update: ~ error:", error);
       res.status(400).json({
         status: "failed",
         message: error.message,

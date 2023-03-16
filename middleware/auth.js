@@ -2,6 +2,7 @@
 
 const jwtLib = require("../libraries/jwtLib");
 const config = require("../config");
+const { User } = require("../models");
 module.exports = {
   user: async (req, res, next) => {
     try {
@@ -10,9 +11,15 @@ module.exports = {
 
       let verified = jwtLib.verify(token, config.jwtSecret);
       if (!verified) throw new Error("Unauthorized");
+      const user = await User.findOne({
+        where: { id: verified.id },
+        attributes: { exclude: ["password"] },
+      });
+      if (!user) throw new Error("User tidak dikenal");
+      if (user.token != token) throw new Error("Session anda telah habis");
 
-      req.userId = verified.id;
-      req.user = verified;
+      req.userId = user.id;
+      req.user = user;
 
       next();
     } catch (error) {
@@ -29,10 +36,16 @@ module.exports = {
 
       let verified = jwtLib.verify(token, config.jwtSecret);
       if (!verified) throw new Error("Unauthorized");
-      if (verified.role != "admin") throw new Error("Admin Only!");
+      const user = await User.findOne({
+        where: { id: verified.id },
+        attributes: { exclude: ["password"] },
+      });
+      if (!user) throw new Error("User tidak dikenal");
+      if (user.token != token) throw new Error("Session anda telah habis");
+      if (user.role != "admin") throw new Error("Admin Only!");
 
-      req.userId = verified.id;
-      req.user = verified;
+      req.userId = user.id;
+      req.user = user;
 
       next();
     } catch (error) {

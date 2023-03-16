@@ -79,9 +79,8 @@ module.exports = {
       const soalExist = await Soal.findOne({ where: { id } });
       if (!soalExist) throw new Error("Soal tidak ditemukan");
 
-      await Soal.update({
+      await Soal.update(payload, {
         where: { id },
-        payload,
       });
       res.status(200).json({
         status: "success",

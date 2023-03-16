@@ -80,7 +80,7 @@ module.exports = {
       const category = await Category.findOne({ where: { id } });
       if (!category) throw new Error("Kategori tidak ditemukan");
 
-      await category.update({ where: { id }, payload });
+      await category.update(payload, { where: { id } });
       res.status(201).json({
         status: "success",
       });

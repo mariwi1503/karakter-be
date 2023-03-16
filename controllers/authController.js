@@ -60,6 +60,7 @@ module.exports = {
         id: user.id,
       });
 
+      await User.update({ token }, { where: { username } });
       res.status(200).json({
         status: "success",
         token,
@@ -71,22 +72,16 @@ module.exports = {
       });
     }
   },
-  updatePassword: async (req, res) => {
+  logout: async (req, res) => {
     try {
-      const id = req.params.id;
-      const new_password = req.body.new_password;
-
-      const user = await User.findOne({ where: { id } });
-      if (!user) throw new Error("user tidak ditemukan");
-
-      await User.update({ password: new_password }, { where: { id } });
-
+      const id = req.userId;
+      await User.update({ token: null }, { where: { id } });
       res.status(200).json({
         status: "success",
       });
     } catch (error) {
       res.status(400).json({
-        status: "failed",
+        status: "Failed",
         message: error.message,
       });
     }

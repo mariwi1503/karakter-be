@@ -50,4 +50,11 @@ module.exports = {
     nomorInduk: Joi.string().optional(),
     kelas: Joi.string().optional(),
   }),
+  updateProfile: Joi.object({
+    nama: Joi.string().min(3).optional(),
+    instansi: Joi.string().optional(),
+    jabatan: Joi.string().optional(),
+    nip: Joi.string().optional(),
+    password: Joi.string().min(6).optional(),
+  }),
 };

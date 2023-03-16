@@ -8,6 +8,7 @@ const cors = require("cors");
 const authRoute = require("./routes/authRoute");
 const siswaRoute = require("./routes/siswaRoute");
 const nilaiRoute = require("./routes/nilaiRoute");
+const profileRoute = require("./routes/profileRoute");
 const categoryRoute = require("./routes/categoryRoute");
 
 const port = process.env.APP_PORT || 3000;
@@ -22,7 +23,7 @@ app.get("/", (req, res) => {
 });
 
 // routes
-app.use("/api", authRoute, nilaiRoute, siswaRoute, categoryRoute);
+app.use("/api", authRoute, nilaiRoute, siswaRoute, categoryRoute, profileRoute);
 
 // unhandled route
 app.all("*", (req, res) => {
