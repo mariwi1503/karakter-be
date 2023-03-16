@@ -1,0 +1,11 @@
+const router = require("express").Router();
+const auth = require("../middleware/auth");
+const soalController = require("../controllers/soalController");
+
+router.get("/soal", auth.user, soalController.getAll);
+router.post("/soal", auth.admin, soalController.create);
+router.get("/soal/:categoryId", auth.user, soalController.getByCategory);
+router.put("/soal/:id", auth.user, soalController.update);
+router.delete("/soal/:id", auth.user, soalController.delete);
+
+module.exports = router;
