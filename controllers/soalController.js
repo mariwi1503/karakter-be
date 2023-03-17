@@ -7,10 +7,10 @@ module.exports = {
   create: async (req, res) => {
     try {
       const payload = await validation.createSoal.validateAsync(req.body);
-      const { soal, bobot, categoryId } = payload;
+      const { soal, score, categoryId } = payload;
       await Soal.create({
         soal,
-        bobot,
+        score,
         categoryId,
       });
 
@@ -41,7 +41,11 @@ module.exports = {
   //   },
   getAll: async (req, res) => {
     try {
-      const listSoal = await Soal.findAll();
+      const listSoal = await Soal.findAll({
+        attributes: {
+          exclude: ["createdAt", "updatedAt"],
+        },
+      });
       res.status(200).json({
         status: "success",
         data: listSoal,
@@ -59,6 +63,9 @@ module.exports = {
 
       const listSoal = await Soal.findAll({
         where: { categoryId },
+        attributes: {
+          exclude: ["createdAt", "updatedAt"],
+        },
       });
       res.status(200).json({
         status: "success",
@@ -92,7 +99,6 @@ module.exports = {
       });
     }
   },
-
   delete: async (req, res) => {
     try {
       const id = req.params.id;

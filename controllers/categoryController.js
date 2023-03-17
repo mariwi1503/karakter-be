@@ -2,6 +2,7 @@
 
 const Category = require("../models/categoryModel");
 const validation = require("../libraries/JoiLib");
+const { Soal } = require("../models");
 
 module.exports = {
   getAll: async (req, res) => {
@@ -21,7 +22,11 @@ module.exports = {
   getOne: async (req, res) => {
     try {
       const id = req.params.id;
-      const category = await Category.findOne({ where: { id } });
+      const category = await Category.findOne({
+        where: { id },
+        include: [{ model: Soal, attributes: ["soal", "score"] }],
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+      });
       if (!category) throw new Error("Category tidak ditemukan");
 
       res.status(200).json({
@@ -77,7 +82,9 @@ module.exports = {
   update: async (req, res) => {
     try {
       const { id } = req.params;
-      const category = await Category.findOne({ where: { id } });
+      const category = await Category.findOne({
+        where: { id },
+      });
       if (!category) throw new Error("Kategori tidak ditemukan");
 
       await category.update(payload, { where: { id } });

@@ -3,7 +3,8 @@
 const { User } = require("../models"),
   bcrypt = require("../libraries/bcryptLib"),
   jwtLib = require("../libraries/jwtLib"),
-  validation = require("../libraries/JoiLib");
+  validation = require("../libraries/JoiLib"),
+  sendEmail = require("../helper/sendEmail");
 
 module.exports = {
   signup: async (req, res) => {

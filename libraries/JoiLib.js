@@ -24,12 +24,12 @@ module.exports = {
   }),
   createSoal: Joi.object({
     soal: Joi.string().required(),
-    bobot: Joi.number().required(),
+    score: Joi.number().required(),
     category_id: Joi.number().required(),
   }),
   updateSoal: Joi.object({
     soal: Joi.string().optional(),
-    bobot: Joi.number().optional(),
+    score: Joi.number().optional(),
     category_id: Joi.number().optional(),
   }),
   updateProfileSchema: Joi.object({

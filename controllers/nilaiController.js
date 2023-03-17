@@ -45,7 +45,6 @@ module.exports = {
 
       res.status(200).json({
         status: "success",
-        data: row,
       });
     } catch (error) {
       res.status(400).json({
@@ -112,7 +111,6 @@ module.exports = {
               },
             ],
           },
-          include: [{ model: Nilai }],
         });
       } else if (kelas) {
         page = page ? parseInt(page) : 1;
@@ -123,7 +121,6 @@ module.exports = {
           where: { kelas },
           limit,
           offset,
-          include: [{ model: Nilai }],
         });
 
         // pagination setup
@@ -143,7 +140,6 @@ module.exports = {
         result = await Siswa.findAndCountAll({
           limit,
           offset,
-          include: [{ model: Nilai, include: [{ model: Category }] }],
         });
 
         // pagination setup

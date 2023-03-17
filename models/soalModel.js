@@ -5,7 +5,7 @@ const Soal = db.define(
   "soal",
   {
     soal: { type: Sequelize.STRING, allowNull: false },
-    bobot: { type: Sequelize.INTEGER, allowNull: false },
+    score: { type: Sequelize.INTEGER, allowNull: false },
   },
   {
     freezeTableName: true,

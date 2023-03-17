@@ -8,6 +8,7 @@ const cors = require("cors");
 const authRoute = require("./routes/authRoute");
 const siswaRoute = require("./routes/siswaRoute");
 const nilaiRoute = require("./routes/nilaiRoute");
+const soalRoute = require("./routes/soalRoute");
 const profileRoute = require("./routes/profileRoute");
 const categoryRoute = require("./routes/categoryRoute");
 
@@ -19,11 +20,19 @@ app.use(cors());
 
 // global route
 app.get("/", (req, res) => {
-  res.send("Welcome");
+  res.send("Welcome to karakterku API");
 });
 
 // routes
-app.use("/api", authRoute, nilaiRoute, siswaRoute, categoryRoute, profileRoute);
+app.use(
+  "/api",
+  authRoute,
+  nilaiRoute,
+  siswaRoute,
+  categoryRoute,
+  profileRoute,
+  soalRoute
+);
 
 // unhandled route
 app.all("*", (req, res) => {
