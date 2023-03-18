@@ -9,8 +9,9 @@ const db = new Sequelize({
   host: dbConfig.host,
   port: 5432,
   pool: {
-    max: 5,
+    max: 20,
     min: 0,
+    acquire: 30000,
     idle: 10000,
   },
   dialect: "postgres",
