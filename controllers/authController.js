@@ -19,6 +19,7 @@ module.exports = {
         instansi = null,
       } = payload;
 
+      email = email.toLowerCase(); // set email to lowercase
       const userExist = await User.findOne({ where: { email } });
       if (userExist) throw new Error("Email sudah digunakan");
 
@@ -46,7 +47,8 @@ module.exports = {
   login: async (req, res) => {
     try {
       const payload = await validation.loginSchema.validateAsync(req.body);
-      const { email, password } = payload;
+      let { email, password } = payload;
+      email = email.toLowerCase(); // set email to lower case
 
       // user exist check
       const user = await User.findOne({ where: { email } });
