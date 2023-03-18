@@ -30,6 +30,7 @@ module.exports = {
         data: { id: siswa.id },
       });
     } catch (error) {
+      console.log("🚀 ~ create: ~ error:", error);
       res.status(400).json({
         status: "failed",
         message: error.message,
