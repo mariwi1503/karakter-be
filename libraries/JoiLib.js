@@ -28,6 +28,7 @@ module.exports = {
     category_id: Joi.number().required(),
   }),
   updateSoal: Joi.object({
+    id: Joi.number().required(),
     soal: Joi.string().optional(),
     score: Joi.number().optional(),
     category_id: Joi.number().optional(),
@@ -56,5 +57,9 @@ module.exports = {
     jabatan: Joi.string().optional(),
     nip: Joi.string().optional(),
     password: Joi.string().min(6).optional(),
+  }),
+  updateCategory: Joi.object({
+    nama: Joi.string().optional(),
+    deskripsi: Joi.string().optional(),
   }),
 };

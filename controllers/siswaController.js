@@ -66,6 +66,7 @@ module.exports = {
             ],
           },
           attributes: { exclude: ["createdAt", "updatedAt", "userId"] },
+          order: [["nama", "ASC"]],
         });
       } else if (search) {
         data = await Siswa.findAll({
@@ -110,6 +111,7 @@ module.exports = {
           limit,
           offset,
           attributes: { exclude: ["createdAt", "updatedAt", "userId"] },
+          order: [["nama", "ASC"]],
         });
         if (offset > 0) {
           data.prev_page = page - 1;
@@ -126,6 +128,10 @@ module.exports = {
           limit,
           offset,
           attributes: { exclude: ["createdAt", "updatedAt", "userId"] },
+          order: [
+            ["kelas", "ASC"],
+            ["nama", "ASC"],
+          ],
         });
         if (offset > 0) {
           data.prev_page = page - 1;

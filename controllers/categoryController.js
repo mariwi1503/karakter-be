@@ -66,8 +66,14 @@ module.exports = {
   delete: async (req, res) => {
     try {
       const { id } = req.params;
-      const category = await Category.findOne({ where: { id } });
+      const category = await Category.findOne({
+        where: { id },
+        include: [{ model: Soal }],
+      });
       if (!category) throw new Error("Kategori tidak ditemukan");
+      if (category.dataValues.soals && category.dataValues.soals.length > 0) {
+        throw new Error("Kategori ini memiliki beberapa soal");
+      }
 
       await category.destroy({ where: { id } });
       res.status(201).json({
@@ -84,6 +90,7 @@ module.exports = {
   update: async (req, res) => {
     try {
       const { id } = req.params;
+      const payload = await validation.updateCategory.validateAsync(req.body);
       const category = await Category.findOne({
         where: { id },
       });

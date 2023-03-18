@@ -1,7 +1,7 @@
 "use strict";
 
 const validation = require("../libraries/JoiLib");
-const { Soal } = require("../models");
+const { Soal, Category } = require("../models");
 
 module.exports = {
   create: async (req, res) => {
@@ -41,10 +41,17 @@ module.exports = {
   //   },
   getAll: async (req, res) => {
     try {
-      const listSoal = await Soal.findAll({
+      const userId = req.userId;
+      let { page, limit } = req.query;
+      page = page ? parseInt(page) : 1;
+      limit = limit ? parseInt(limit) : 7;
+      let offset = (page - 1) * limit;
+      const listSoal = await Soal.findAndCountAll({
         attributes: {
-          exclude: ["createdAt", "updatedAt"],
+          exclude: ["createdAt", "updatedAt", "categoryId"],
         },
+        include: [{ model: Category, attributes: ["id", "nama"] }],
+        order: [["id", "ASC"]],
       });
       res.status(200).json({
         status: "success",
@@ -66,6 +73,7 @@ module.exports = {
         attributes: {
           exclude: ["createdAt", "updatedAt"],
         },
+        order: [["id", "ASC"]],
       });
       res.status(200).json({
         status: "success",
@@ -80,14 +88,14 @@ module.exports = {
   },
   update: async (req, res) => {
     try {
-      const id = req.params.id;
+      // const id = req.params.id;
       const payload = await validation.updateSoal.validateAsync(req.body);
       //   const { soal, bobot, categoryId } = payload;
-      const soalExist = await Soal.findOne({ where: { id } });
+      const soalExist = await Soal.findOne({ where: { id: payload.id } });
       if (!soalExist) throw new Error("Soal tidak ditemukan");
 
       await Soal.update(payload, {
-        where: { id },
+        where: { id: payload.id },
       });
       res.status(200).json({
         status: "success",

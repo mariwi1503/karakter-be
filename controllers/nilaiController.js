@@ -109,6 +109,7 @@ module.exports = {
               ],
             },
           ],
+          order: [["nama", "ASC"]],
         });
       } else if (search) {
         result = await Siswa.findAll({
@@ -189,6 +190,7 @@ module.exports = {
               ],
             },
           ],
+          order: [["nama", "ASC"]],
         });
 
         // pagination setup
@@ -234,6 +236,10 @@ module.exports = {
           where: {
             userId,
           },
+          order: [
+            ["kelas", "ASC"],
+            ["nama", "ASC"],
+          ],
         });
 
         // pagination setup

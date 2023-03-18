@@ -36,7 +36,10 @@ app.use(
 
 // unhandled route
 app.all("*", (req, res) => {
-  res.send("Sepertinya anda tersesat");
+  // res.send("Sepertinya anda tersesat");
+  res.status(404).json({
+    message: "Sepertinya anda tersesat",
+  });
 });
 
 app.listen(port, () => {
