@@ -213,7 +213,7 @@ module.exports = {
       const siswa = await Siswa.findOne({ where: { id } });
       if (!siswa) throw new Error("Data siswa tidak ditemukan");
 
-      await Siswa.delete({ where: { id } });
+      await Siswa.destroy({ where: { id } });
       res.status(200).json({ status: "success" });
     } catch (error) {
       res.status(400).json({
