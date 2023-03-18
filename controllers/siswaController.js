@@ -11,12 +11,15 @@ module.exports = {
       const userId = req.userId;
       const { nama, nomorAbsen, nomorInduk, kelas } = payload;
       const [siswa, created] = await Siswa.findOrCreate({
-        where: { nomorInduk },
+        where: {
+          [Op.and]: [{ userId }, { nomorInduk }],
+        },
         defaults: {
           nama,
           nomorAbsen,
           userId,
           kelas,
+          nomorInduk,
         },
       });
       if (!created)
