@@ -5,7 +5,7 @@ const User = db.define(
   "user",
   {
     nama: { type: Sequelize.STRING, allowNull: false },
-    username: { type: Sequelize.STRING, allowNull: false },
+    email: { type: Sequelize.STRING, allowNull: false },
     nip: { type: Sequelize.STRING },
     instansi: { type: Sequelize.STRING },
     jabatan: { type: Sequelize.STRING },

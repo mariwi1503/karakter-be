@@ -7,7 +7,9 @@ const { Soal } = require("../models");
 module.exports = {
   getAll: async (req, res) => {
     try {
-      const allCategory = await Category.findAll();
+      const allCategory = await Category.findAll({
+        attributes: ["id", "nama", "deskripsi"],
+      });
       res.status(200).json({
         status: "success",
         data: allCategory,

@@ -3,14 +3,14 @@ const Joi = require("@hapi/joi");
 module.exports = {
   signupSchema: Joi.object({
     nama: Joi.string().min(3).required(),
-    username: Joi.string().min(3).required(),
+    email: Joi.string().email().required(),
     instansi: Joi.string().optional(),
     jabatan: Joi.string().optional(),
     nip: Joi.string().optional(),
     password: Joi.string().min(6).required(),
   }),
   loginSchema: Joi.object({
-    username: Joi.string().min(3).required(),
+    email: Joi.string().email().required(),
     password: Joi.string().min(6).required(),
   }),
   categorySchema: Joi.object({

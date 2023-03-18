@@ -19,7 +19,8 @@ module.exports = {
           kelas,
         },
       });
-      if (!created) throw new Error("Siswa sudah terdaftar");
+      if (!created)
+        throw new Error(`Siswa dengan NIS: ${nomorInduk} sudah terdaftar`);
 
       res.status(201).json({
         status: "success",

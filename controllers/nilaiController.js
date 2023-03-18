@@ -78,7 +78,7 @@ module.exports = {
                     },
                   },
                   {
-                    nomor_induk: {
+                    nomorInduk: {
                       [Op.iLike]: `%${search}%`,
                     },
                   },
@@ -86,7 +86,29 @@ module.exports = {
               },
             ],
           },
-          include: [{ model: Nilai }],
+          attributes: { exclude: ["createdAt", "updatedAt", "userId"] },
+          include: [
+            {
+              model: Nilai,
+              required: true,
+              attributes: {
+                exclude: [
+                  "createdAt",
+                  "updatedAt",
+                  "userId",
+                  "siswaId",
+                  "id",
+                  "categoryId",
+                ],
+              },
+              include: [
+                {
+                  model: Category,
+                  attributes: ["id", "nama"],
+                },
+              ],
+            },
+          ],
         });
       } else if (search) {
         result = await Siswa.findAll({
@@ -103,7 +125,7 @@ module.exports = {
                     },
                   },
                   {
-                    nomor_induk: {
+                    nomorInduk: {
                       [Op.iLike]: `%${search}%`,
                     },
                   },
@@ -111,6 +133,29 @@ module.exports = {
               },
             ],
           },
+          attributes: { exclude: ["createdAt", "updatedAt", "userId"] },
+          include: [
+            {
+              model: Nilai,
+              required: true,
+              attributes: {
+                exclude: [
+                  "createdAt",
+                  "updatedAt",
+                  "userId",
+                  "siswaId",
+                  "id",
+                  "categoryId",
+                ],
+              },
+              include: [
+                {
+                  model: Category,
+                  attributes: ["id", "nama"],
+                },
+              ],
+            },
+          ],
         });
       } else if (kelas) {
         page = page ? parseInt(page) : 1;
@@ -121,6 +166,29 @@ module.exports = {
           where: { kelas },
           limit,
           offset,
+          attributes: { exclude: ["createdAt", "updatedAt", "userId"] },
+          include: [
+            {
+              model: Nilai,
+              required: true,
+              attributes: {
+                exclude: [
+                  "createdAt",
+                  "updatedAt",
+                  "userId",
+                  "siswaId",
+                  "id",
+                  "categoryId",
+                ],
+              },
+              include: [
+                {
+                  model: Category,
+                  attributes: ["id", "nama"],
+                },
+              ],
+            },
+          ],
         });
 
         // pagination setup
@@ -140,6 +208,32 @@ module.exports = {
         result = await Siswa.findAndCountAll({
           limit,
           offset,
+          attributes: { exclude: ["createdAt", "updatedAt", "userId"] },
+          include: [
+            {
+              model: Nilai,
+              required: true,
+              attributes: {
+                exclude: [
+                  "createdAt",
+                  "updatedAt",
+                  "userId",
+                  "siswaId",
+                  "id",
+                  "categoryId",
+                ],
+              },
+              include: [
+                {
+                  model: Category,
+                  attributes: ["id", "nama"],
+                },
+              ],
+            },
+          ],
+          where: {
+            userId,
+          },
         });
 
         // pagination setup
@@ -173,7 +267,7 @@ module.exports = {
         where: {
           [Op.and]: [{ userId }, { siswaId }],
         },
-        include: [{ model: Category }],
+        include: [{ model: Category, attributes: ["id", "nama"] }],
         attributes: {
           exclude: [
             "createdAt",
