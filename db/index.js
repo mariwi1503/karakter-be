@@ -15,6 +15,7 @@ const db = new Sequelize({
     idle: 10000,
   },
   dialect: "postgres",
+  logging: false, // mencegah log sequelize keluar di terminal
   // dialectOptions: {
   //   ssl: {
   //     require: true,
