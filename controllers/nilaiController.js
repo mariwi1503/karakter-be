@@ -47,6 +47,7 @@ module.exports = {
         status: "success",
       });
     } catch (error) {
+      console.log("submit_nilai: ~ error:", error);
       res.status(400).json({
         status: "failed",
         message: error.message,
@@ -164,7 +165,16 @@ module.exports = {
         let offset = (page - 1) * limit;
         offset = offset ?? 0; // avoid null or undefined value for offset
         result = await Siswa.findAndCountAll({
-          where: { kelas },
+          where: {
+            [Op.and]: [
+              {
+                userId,
+              },
+              {
+                kelas,
+              },
+            ],
+          },
           limit,
           offset,
           attributes: { exclude: ["createdAt", "updatedAt", "userId"] },
