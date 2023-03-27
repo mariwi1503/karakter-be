@@ -1,6 +1,6 @@
 "use strict";
 
-const { Nilai, Siswa, Category } = require("../models");
+const { Nilai, Siswa, Category, User } = require("../models");
 const validation = require("../libraries/JoiLib");
 const { Op, Sequelize } = require("sequelize");
 const db = require("../db");
@@ -91,7 +91,7 @@ module.exports = {
           include: [
             {
               model: Nilai,
-              required: true,
+              // required: true,
               attributes: {
                 exclude: [
                   "createdAt",
@@ -139,7 +139,7 @@ module.exports = {
           include: [
             {
               model: Nilai,
-              required: true,
+              // required: true,
               attributes: {
                 exclude: [
                   "createdAt",
@@ -181,7 +181,7 @@ module.exports = {
           include: [
             {
               model: Nilai,
-              required: true,
+              // required: true,
               attributes: {
                 exclude: [
                   "createdAt",
@@ -224,7 +224,7 @@ module.exports = {
           include: [
             {
               model: Nilai,
-              required: true,
+              // required: true,
               attributes: {
                 exclude: [
                   "createdAt",
@@ -298,6 +298,87 @@ module.exports = {
       res.status(200).json({
         status: "success",
         data: nilai,
+      });
+    } catch (error) {
+      res.status(400).json({
+        status: "failed",
+        message: error.message,
+      });
+    }
+  },
+
+  // public api for siswa
+  siswaCheck: async (req, res) => {
+    try {
+      const { nomorInduk } = req.query;
+      if (!nomorInduk)
+        throw new Error("Silahkan masukkan nomor induk siswa kamu");
+
+      const siswa = await Siswa.findAll({
+        where: { nomorInduk },
+        attributes: {
+          exclude: [
+            "createdAt",
+            "updatedAt",
+            "userId",
+            "kelas",
+            "nomorAbsen",
+            "nomorInduk",
+          ],
+        },
+        include: [
+          {
+            model: User,
+            attributes: {
+              exclude: [
+                "createdAt",
+                "updatedAt",
+                "email",
+                "instansi",
+                "jabatan",
+                "nip",
+                "password",
+              ],
+            },
+          },
+        ],
+        // include: [
+        //   {
+        //     model: Nilai,
+        //     required: true,
+        //     attributes: {
+        //       exclude: [
+        //         "createdAt",
+        //         "updatedAt",
+        //         "userId",
+        //         "siswaId",
+        //         "id",
+        //         "categoryId",
+        //       ],
+        //     },
+        //     include: [
+        //       {
+        //         model: Category,
+        //         attributes: ["id", "nama"],
+        //       },
+        //     ],
+        //   },
+        //   {
+        //     model: User,
+        //     attributes: ["nama", "jabatan"],
+        //   },
+        // ],
+      });
+      if (!siswa)
+        throw new Error(`Data untuk NIS:${nomorInduk} tidak ditemukan`);
+
+      // const nilaiSiswa = await Nilai.findAll({
+      //   where: { siswaId: siswa.id },
+      // });
+
+      res.status(200).json({
+        status: "success",
+        data: siswa,
       });
     } catch (error) {
       res.status(400).json({

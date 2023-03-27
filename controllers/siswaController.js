@@ -23,7 +23,9 @@ module.exports = {
         },
       });
       if (!created)
-        throw new Error(`Siswa dengan NIS: ${nomorInduk} sudah terdaftar`);
+        throw new Error(
+          `Anda sudah mendaftarkan siswa dengan NIS: ${nomorInduk} dengan nama ${siswa.nama}`
+        );
 
       res.status(201).json({
         status: "success",
@@ -159,11 +161,15 @@ module.exports = {
   getOne: async (req, res) => {
     try {
       const id = req.params.id;
+      const userId = req.userId;
       const siswa = await Siswa.findOne({
         where: { id },
         include: [{ model: Nilai }],
         attributes: { exclude: ["createdAt", "updatedAt", "userId"] },
       });
+      if (siswa && siswa.userId != userId) {
+        throw new Error("Data siswa ini bukan milik anda");
+      }
 
       res.status(200).json({
         status: "success",
@@ -181,8 +187,12 @@ module.exports = {
     try {
       const payload = await validation.updateSiswa.validateAsync(req.body);
       const id = req.params.id;
+      const userId = req.userId;
       const siswa = await Siswa.findOne({ where: { id } });
       if (!siswa) throw new Error("Data siswa tidak ditemukan");
+      if (siswa.userId != userId) {
+        throw new Error("Data siswa ini bukan milik anda");
+      }
 
       if (payload.nomorInduk) {
         const dataExist = await Siswa.findOne({
@@ -210,10 +220,39 @@ module.exports = {
   delete: async (req, res) => {
     try {
       const id = req.params.id;
+      const userId = req.userId;
       const siswa = await Siswa.findOne({ where: { id } });
       if (!siswa) throw new Error("Data siswa tidak ditemukan");
+      if (siswa.userId != userId) {
+        throw new Error("Data siswa ini bukan milik anda");
+      }
 
       await Siswa.destroy({ where: { id } });
+      res.status(200).json({ status: "success" });
+    } catch (error) {
+      res.status(400).json({
+        status: "failed",
+        message: error.message,
+      });
+    }
+  },
+
+  createFromExisting: async (req, res) => {
+    try {
+      const { nomorInduk } = req.body;
+      const userId = req.userId;
+      const [siswa] = await User.findAll({ where: { nomorInduk } });
+      if (!siswa) throw new Error("Data tidak ditemukan");
+
+      // create new siswa
+      await Siswa.create({
+        nama: siswa.nama,
+        nomorAbsen: siswa.nomorAbsen,
+        kelas: siswa.kelas,
+        nomorInduk: siswa.nomorInduk,
+        userId,
+      });
+
       res.status(200).json({ status: "success" });
     } catch (error) {
       res.status(400).json({

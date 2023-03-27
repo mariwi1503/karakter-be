@@ -16,12 +16,12 @@ const db = new Sequelize({
   },
   dialect: "postgres",
   logging: false, // mencegah log sequelize keluar di terminal
-  // dialectOptions: {
-  //   ssl: {
-  //     require: true,
-  //     rejectUnauthorized: false,
-  //   },
-  // },
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
+  },
 });
 
 // Connection test
