@@ -87,13 +87,13 @@ module.exports = {
               },
             ],
           },
-          attributes: { exclude: ["updatedAt", "userId"] },
+          attributes: { exclude: ["userId"] },
           include: [
             {
               model: Nilai,
               // required: true,
               attributes: {
-                exclude: ["updatedAt", "userId", "siswaId", "id", "categoryId"],
+                exclude: ["userId", "siswaId", "id", "categoryId"],
               },
               include: [
                 {
@@ -128,13 +128,13 @@ module.exports = {
               },
             ],
           },
-          attributes: { exclude: ["updatedAt", "userId"] },
+          attributes: { exclude: ["userId"] },
           include: [
             {
               model: Nilai,
               // required: true,
               attributes: {
-                exclude: ["updatedAt", "userId", "siswaId", "id", "categoryId"],
+                exclude: ["userId", "siswaId", "id", "categoryId"],
               },
               include: [
                 {
@@ -163,13 +163,13 @@ module.exports = {
           },
           limit,
           offset,
-          attributes: { exclude: ["updatedAt", "userId"] },
+          attributes: { exclude: ["userId"] },
           include: [
             {
               model: Nilai,
               // required: true,
               attributes: {
-                exclude: ["updatedAt", "userId", "siswaId", "id", "categoryId"],
+                exclude: ["userId", "siswaId", "id", "categoryId"],
               },
               include: [
                 {
@@ -199,13 +199,13 @@ module.exports = {
         result = await Siswa.findAndCountAll({
           limit,
           offset,
-          attributes: { exclude: ["updatedAt", "userId"] },
+          attributes: { exclude: ["userId"] },
           include: [
             {
               model: Nilai,
               // required: true,
               attributes: {
-                exclude: ["updatedAt", "userId", "siswaId", "id", "categoryId"],
+                exclude: ["userId", "siswaId", "id", "categoryId"],
               },
               include: [
                 {
@@ -257,7 +257,7 @@ module.exports = {
         },
         include: [{ model: Category, attributes: ["id", "nama"] }],
         attributes: {
-          exclude: ["updatedAt", "userId", "siswaId", "id", "categoryId"],
+          exclude: ["userId", "siswaId", "id", "categoryId"],
         },
       });
       res.status(200).json({
@@ -282,20 +282,13 @@ module.exports = {
       const siswa = await Siswa.findAll({
         where: { nomorInduk },
         attributes: {
-          exclude: ["updatedAt", "userId", "kelas", "nomorAbsen", "nomorInduk"],
+          exclude: ["userId", "kelas", "nomorAbsen", "nomorInduk"],
         },
         include: [
           {
             model: User,
             attributes: {
-              exclude: [
-                "updatedAt",
-                "email",
-                "instansi",
-                "jabatan",
-                "nip",
-                "password",
-              ],
+              exclude: ["email", "instansi", "jabatan", "nip", "password"],
             },
           },
         ],
