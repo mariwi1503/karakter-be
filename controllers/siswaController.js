@@ -71,7 +71,7 @@ module.exports = {
               },
             ],
           },
-          attributes: { exclude: ["createdAt", "updatedAt", "userId"] },
+          attributes: { exclude: ["updatedAt", "userId"] },
           order: [["nama", "ASC"]],
         });
       } else if (search) {
@@ -97,7 +97,7 @@ module.exports = {
               },
             ],
           },
-          attributes: { exclude: ["createdAt", "updatedAt"] },
+          attributes: { exclude: ["updatedAt"] },
         });
       } else if (kelas) {
         page = parseInt(page);
@@ -116,7 +116,7 @@ module.exports = {
           },
           limit,
           offset,
-          attributes: { exclude: ["createdAt", "updatedAt", "userId"] },
+          attributes: { exclude: ["updatedAt", "userId"] },
           order: [["nama", "ASC"]],
         });
         if (offset > 0) {
@@ -133,7 +133,7 @@ module.exports = {
           where: { userId },
           limit,
           offset,
-          attributes: { exclude: ["createdAt", "updatedAt", "userId"] },
+          attributes: { exclude: ["updatedAt", "userId"] },
           order: [
             ["kelas", "ASC"],
             ["nama", "ASC"],
@@ -165,7 +165,7 @@ module.exports = {
       const siswa = await Siswa.findOne({
         where: { id },
         include: [{ model: Nilai }],
-        attributes: { exclude: ["createdAt", "updatedAt", "userId"] },
+        attributes: { exclude: ["updatedAt", "userId"] },
       });
       if (siswa && siswa.userId != userId) {
         throw new Error("Data siswa ini bukan milik anda");
