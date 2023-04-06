@@ -279,10 +279,19 @@ module.exports = {
       if (!nomorInduk)
         throw new Error("Silahkan masukkan nomor induk siswa kamu");
 
+      const siswaFound = await Siswa.findOne({ where: { nomorInduk } });
+
       const siswa = await Siswa.findAll({
         where: { nomorInduk },
         attributes: {
-          exclude: ["userId", "kelas", "nomorAbsen", "nomorInduk"],
+          exclude: [
+            "userId",
+            "kelas",
+            "nomorAbsen",
+            "nomorInduk",
+            "createdAt",
+            "updatedAt",
+          ],
         },
         include: [
           {
@@ -295,39 +304,20 @@ module.exports = {
                 "nip",
                 "password",
                 "token",
+                "role",
+                "createdAt",
+                "updatedAt",
               ],
             },
           },
           {
             model: Nilai,
+            attributes: {
+              exclude: ["userId", "siswaId", "categoryId"],
+            },
+            include: [{ model: Category, attributes: ["nama"] }],
           },
         ],
-        // include: [
-        //   {
-        //     model: Nilai,
-        //     required: true,
-        //     attributes: {
-        //       exclude: [
-        //         "createdAt",
-        //         "updatedAt",
-        //         "userId",
-        //         "siswaId",
-        //         "id",
-        //         "categoryId",
-        //       ],
-        //     },
-        //     include: [
-        //       {
-        //         model: Category,
-        //         attributes: ["id", "nama"],
-        //       },
-        //     ],
-        //   },
-        //   {
-        //     model: User,
-        //     attributes: ["nama", "jabatan"],
-        //   },
-        // ],
       });
       if (!siswa)
         throw new Error(`Data untuk NIS:${nomorInduk} tidak ditemukan`);
