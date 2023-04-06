@@ -288,8 +288,18 @@ module.exports = {
           {
             model: User,
             attributes: {
-              exclude: ["email", "instansi", "jabatan", "nip", "password"],
+              exclude: [
+                "email",
+                "instansi",
+                "jabatan",
+                "nip",
+                "password",
+                "token",
+              ],
             },
+          },
+          {
+            model: Nilai,
           },
         ],
         // include: [
