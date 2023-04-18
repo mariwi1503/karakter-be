@@ -6,6 +6,7 @@ const Category = db.define(
   {
     nama: { type: Sequelize.STRING, allowNull: false },
     deskripsi: { type: Sequelize.STRING },
+    gambar: { type: Sequelize.STRING },
   },
   {
     freezeTableName: true,

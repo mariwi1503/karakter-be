@@ -8,7 +8,7 @@ module.exports = {
   getAll: async (req, res) => {
     try {
       const allCategory = await Category.findAll({
-        attributes: ["id", "nama", "deskripsi"],
+        attributes: ["id", "nama", "deskripsi", "gambar"],
         order: [["id", "ASC"]],
       });
       res.status(200).json({
