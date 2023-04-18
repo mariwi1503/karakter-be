@@ -9,6 +9,7 @@ module.exports = {
     try {
       const allCategory = await Category.findAll({
         attributes: ["id", "nama", "deskripsi"],
+        order: [["id", "ASC"]],
       });
       res.status(200).json({
         status: "success",
