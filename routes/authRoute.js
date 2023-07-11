@@ -10,12 +10,13 @@ router.put("/auth/logout", auth.user, authController.logout);
 // for testing xendit callback
 router.post("/callback", async (req, res) => {
   try {
-    console.log(req.header.toString());
+    // console.log(req.header.toString());
     const data = axios.post(
-      "https://abi-cash.abhitech-cloud.com/api/loan-applications/callback"
+      "http://209.97.163.32:4000/api/loan-applications/callback",
+      req.body
     );
     res.status(200).json({
-      data,
+      message: "success",
     });
   } catch (error) {
     res.status(400).json({
