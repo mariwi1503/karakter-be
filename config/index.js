@@ -13,4 +13,5 @@ module.exports = {
     email: process.env.EMAIL,
     pass: process.env.EMAIL_PASS,
   },
+  callbackToken: process.env.CB_TOKEN,
 };
