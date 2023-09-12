@@ -1,12 +1,12 @@
 const nodemailer = require("nodemailer"),
   { mailConfig } = require("../config");
 
-module.exports = async (email, name) => {
+module.exports = async (email, text) => {
   const msg = {
-    from: "'No-reply' <ary@spatialist.co>",
+    from: "'Karakterku' <karakterku>",
     to: email,
-    subject: "Greeting from GEMSTAR",
-    text: `Hi ${name}, Thanks for your registration, enjoy our services`,
+    subject: "Password baru",
+    text,
   };
   nodemailer
     .createTransport({

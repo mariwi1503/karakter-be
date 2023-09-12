@@ -4,7 +4,8 @@ const { User } = require("../models"),
   bcrypt = require("../libraries/bcryptLib"),
   jwtLib = require("../libraries/jwtLib"),
   validation = require("../libraries/JoiLib"),
-  sendEmail = require("../helper/sendEmail");
+  sendEmail = require("../helper/sendEmail"),
+  crypto = require("crypto");
 
 module.exports = {
   signup: async (req, res) => {
@@ -91,9 +92,29 @@ module.exports = {
   },
   forgotPassword: async (req, res) => {
     try {
-      const { email } = req.body;
+      let { email } = req.body;
+      email = email.toLowerCase();
       const user = await User.findOne({ where: { email } });
-      // TODO = finish the code
+      if (!user) {
+        throw new Error("Akun tidak ditemukan");
+      }
+
+      const characters =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      const randomBytes = crypto.randomBytes(6);
+      const passwordArr = Array.from(randomBytes).map(
+        (byte) => characters[byte % characters.length]
+      );
+
+      const newPassword = passwordArr.join("");
+      const password = bcrypt.hasher(newPassword);
+      await User.update({ password }, { where: { id: user.id } });
+
+      await sendEmail(
+        email,
+        `Halo ${user.nama}, berikut adalah password baru anda: \n ${newPassword}. \n Perbaharuilah password anda secara berkala`
+      );
+
       res.status(200).json({
         status: "success",
       });
